@@ -10,7 +10,7 @@ public:
   Image(int w, int h, int colors) noexcept
       : image_data(static_cast<size_t>(w * h * colors), 0), width(w), height(h),
         channels(colors) {}
-  bool set(int x, int y, Color color) noexcept;
+  void set(int x, int y, Color color) noexcept;
   int x() const noexcept;
   int y() const noexcept;
   const unsigned char *get_data() const noexcept;

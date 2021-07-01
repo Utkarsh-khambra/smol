@@ -1,10 +1,8 @@
 #include "image.hpp"
 #include "model.hpp"
-#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <fmt/core.h>
-#include <unistd.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -52,7 +50,7 @@ Image render_face(Model &model) {
 }
 
 int main() {
-  Model m("/home/utkarsh/smol/src/head.obj");
+  Model m("/home/utkarsh/smol/asset/head.obj");
   auto I = render_face(m);
   stbi_flip_vertically_on_write(1);
   stbi_write_jpg("test.jpg", I.x(), I.y(), 3, I.get_data(), 90);
