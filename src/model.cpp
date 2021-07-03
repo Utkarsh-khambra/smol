@@ -9,6 +9,7 @@ Model::Model() {}
 
 // drop int is there because split view is not getting rid of extran space in vn
 // and vt
+// TODO handle errors reporting in from_char
 glm::vec3 parse_vert_props(std::string_view line, int drop_int = 1) {
   int j = 0;
   glm::vec3 temp;

@@ -36,7 +36,7 @@ find_package(spdlog CONFIG REQUIRED)
 # automatically. Keep that in mind when changing files, or explicitly mention them here.
 
 # ---- Create library ----
-add_executable(smol src/model.cpp src/image.cpp  src/main.cpp )
+add_executable(smol src/drawing.cpp src/model.cpp src/image.cpp  src/main.cpp )
 # Note: for header-only libraries change all PUBLIC flags to INTERFACE and create an interface
 # target: add_library(smol INTERFACE) set_target_properties(smol PROPERTIES
 # INTERFACE_COMPILE_FEATURES cxx_std_17)
