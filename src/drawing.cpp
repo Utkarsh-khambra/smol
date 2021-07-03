@@ -4,8 +4,10 @@
 #include <cmath>
 #include <fmt/core.h>
 #include <fmt/ranges.h>
-void draw_triangle(glm::vec2 p, glm::vec2 q, glm::vec2 r, Image &img,
+void draw_triangle(glm::ivec2 p, glm::ivec2 q, glm::ivec2 r, Image &img,
                    glm::u8vec3 color) {
+  if (p.y == q.y && p.y == r.y)
+    return;
   if (p.y > q.y)
     std::swap(p, q);
   if (p.y > r.y)
@@ -14,14 +16,17 @@ void draw_triangle(glm::vec2 p, glm::vec2 q, glm::vec2 r, Image &img,
     std::swap(q, r);
   int total_height = r.y - p.y;
   for (auto i = 0; i < total_height; ++i) {
-    bool second_half = i > static_cast<int>(q.y - p.y) ||
-                       static_cast<int>(r.y) == static_cast<int>(q.y);
+    bool second_half = i > (q.y - p.y) || p.y == q.y;
     int segment_height = second_half ? r.y - q.y : q.y - p.y;
     auto alpha = static_cast<float>(i) / total_height;
     auto beta = static_cast<float>(i - (second_half ? (q.y - p.y) : 0)) /
                 segment_height;
-    glm::vec2 a = p + (r - p) * alpha;
-    glm::vec2 b = second_half ? q + (r - q) * beta : p + (q - p) * beta;
+    glm::ivec2 a{std::lerp(p.x, r.x, alpha), std::lerp(p.y, r.y, alpha)};
+    glm::ivec2 b =
+        second_half
+            ? glm::ivec2{std::lerp(q.x, r.x, beta), std::lerp(q.y, r.y, beta)}
+            : glm::ivec2{std::lerp(p.x, q.x, beta), std::lerp(p.y, q.y, beta)};
+
     if (a.x > b.x)
       std::swap(a, b);
     for (int j = a.x; j <= b.x; ++j)
