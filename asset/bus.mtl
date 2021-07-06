@@ -1,0 +1,91 @@
+# Blender MTL File: 'None'
+# Material Count: 8
+
+newmtl GENERIC_BADGES
+Ns 18.000005
+Ka 1.000000 1.000000 1.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd /home/utkarsh/Downloads/90-light-commercial-truck-low-poly-model/Dev Source Storage/Vehicle materials/Badges/GENERIC_BADGES_DIF.png
+
+newmtl UCB_BOTTOM
+Ns 18.000005
+Ka 1.000000 1.000000 1.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump /home/utkarsh/Downloads/90-light-commercial-truck-low-poly-model/source/Textures/UCB_BOTTOM_nrm.png
+map_Kd /home/utkarsh/Downloads/90-light-commercial-truck-low-poly-model/source/Textures/UCB_BOTTOM_DIF.png
+
+newmtl UCB_GLASS_CLEAN
+Ns 18.000005
+Ka 1.000000 1.000000 1.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 0.430000
+illum 1
+map_Kd /home/utkarsh/Downloads/90-light-commercial-truck-low-poly-model/source/Textures/UCB_GLASS_CLEAN_dif.png
+
+newmtl bodycolor
+Ns 143.999983
+Ka 1.000000 1.000000 1.000000
+Kd 0.862745 0.862745 0.862745
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump /home/utkarsh/Downloads/90-light-commercial-truck-low-poly-model/Lowpoly cars - modern/MODEL_LCT13/ucbfacture_Nor_1k.png
+
+newmtl interior
+Ns 25.455841
+Ka 1.000000 1.000000 1.000000
+Kd 0.019608 0.019608 0.019608
+Ks 0.380000 0.380000 0.380000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl krmlgtbdy85_headlights
+Ns 18.000005
+Ka 1.000000 1.000000 1.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd /home/utkarsh/Downloads/90-light-commercial-truck-low-poly-model/source/Textures/krmlgtbdy85_headlights_dif.png
+
+newmtl tier_1o
+Ns 18.000005
+Ka 1.000000 1.000000 1.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd /home/utkarsh/Downloads/90-light-commercial-truck-low-poly-model/source/Textures/tier_1o.png
+
+newmtl wheel_truck_stamp
+Ns 33.589178
+Ka 1.000000 1.000000 1.000000
+Kd 0.588000 0.588000 0.588000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump /home/utkarsh/Downloads/90-light-commercial-truck-low-poly-model/source/Textures/wheel_truck_stamp_nrm.png
+map_Kd /home/utkarsh/Downloads/90-light-commercial-truck-low-poly-model/source/Textures/wheel_truck_stamp_spec.png

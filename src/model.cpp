@@ -1,4 +1,5 @@
 #include "model.hpp"
+#include <array>
 #include <charconv>
 #include <fmt/core.h>
 #include <fstream>
@@ -26,7 +27,6 @@ glm::vec3 parse_vert_props(std::string_view line, int drop_int = 1) {
 
 Model::Model(const char *filename) {
   std::ifstream file(filename);
-  int j;
   for (std::string line; std::getline(file, line);) {
     // Vertex parsing
     if (line.substr(0, 2) == "v ") {
@@ -34,7 +34,7 @@ Model::Model(const char *filename) {
     }
     // Texture parsing
     else if (line.substr(0, 2) == "vt") {
-      texture_coord.emplace_back(parse_vert_props(line, 2));
+      texture.emplace_back(parse_vert_props(line, 2));
     }
     // Vertex Normal parsing
     else if (line.substr(0, 2) == "vn") {
@@ -42,19 +42,21 @@ Model::Model(const char *filename) {
     }
     // Face parsing
     else if (line.substr(0, 2) == "f ") {
-      glm::uvec3 temp_coords;
-      j = 0;
+      std::array<glm::uvec3, 3> temp_indices;
+      int j = 0;
       for (auto i : line | std::views::split(' ') | std::views::drop(1)) {
+        size_t k = 0;
         for (auto c : i | std::views::split('/')) {
           std::from_chars(&*std::ranges::begin(c),
                           &*std::ranges::begin(c) + std::ranges::distance(c),
-                          temp_coords[j]);
-          temp_coords[j] -= 1;
-          ++j;
-          break;
+                          temp_indices.at(k)[j]);
+          temp_indices.at(k)[j] -= 1;
+          assert(k < 3);
+          ++k;
         }
+        ++j;
       }
-      faces.push_back(temp_coords);
+      faces.push_back(temp_indices);
     }
   }
 }
@@ -62,8 +64,18 @@ Model::Model(const char *filename) {
 size_t Model::nfaces() const noexcept { return faces.size(); }
 size_t Model::nverts() const noexcept { return vertices.size(); }
 glm::vec3 Model::vert(size_t id) noexcept { return vertices.at(id); }
-glm::uvec3 Model::face(size_t id) noexcept { return faces.at(id); }
+glm::uvec3 Model::face(size_t id, FACE_PROP prop) noexcept {
+  return faces.at(id).at(static_cast<size_t>(prop));
+}
 const glm::vec3 Model::vert(size_t id) const noexcept {
   return vertices.at(id);
 }
-const glm::uvec3 Model::face(size_t id) const noexcept { return faces.at(id); }
+const glm::uvec3 Model::face(size_t id, FACE_PROP prop) const noexcept {
+  return faces.at(id).at(static_cast<size_t>(prop));
+}
+glm::vec3 Model::normal(size_t id) noexcept { return normals.at(id); }
+glm::vec3 Model::normal(size_t id) const noexcept { return normals.at(id); }
+glm::vec3 Model::texture_coord(size_t id) noexcept { return texture.at(id); }
+glm::vec3 Model::texture_coord(size_t id) const noexcept {
+  return texture.at(id);
+}

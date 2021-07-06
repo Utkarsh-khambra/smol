@@ -4,16 +4,24 @@
 #include <cmath>
 #include <fmt/core.h>
 #include <fmt/ranges.h>
+
 void draw_triangle(glm::ivec2 p, glm::ivec2 q, glm::ivec2 r, glm::vec3 z_val,
-                   Image &img, glm::u8vec3 color, float *zbuffer) {
+                   Image &img, glm::u8vec3 color_p, glm::u8vec3 color_q,
+                   glm::u8vec3 color_r, float *zbuffer) {
   if (p.y == q.y && p.y == r.y)
     return;
-  if (p.y > q.y)
+  if (p.y > q.y) {
     std::swap(p, q);
-  if (p.y > r.y)
+    std::swap(color_p, color_q);
+  }
+  if (p.y > r.y) {
     std::swap(p, r);
-  if (q.y > r.y)
+    std::swap(color_p, color_r);
+  }
+  if (q.y > r.y) {
     std::swap(q, r);
+    std::swap(color_q, color_r);
+  }
   int total_height = r.y - p.y;
   for (auto i = 0; i < total_height; ++i) {
     bool second_half = i > (q.y - p.y) || p.y == q.y;
@@ -29,11 +37,31 @@ void draw_triangle(glm::ivec2 p, glm::ivec2 q, glm::ivec2 r, glm::vec3 z_val,
     float a_z = std::lerp(z_val[0], z_val[2], alpha);
     float b_z = second_half ? std::lerp(z_val[1], z_val[2], beta)
                             : std::lerp(z_val[0], z_val[1], beta);
+    glm::u8vec3 right_color =
+        glm::u8vec3(std::lerp(color_p.x, color_r.x, alpha),
+                    std::lerp(color_p.y, color_r.y, alpha),
+                    std::lerp(color_p.z, color_r.z, alpha));
 
-    if (a.x > b.x)
+    glm::u8vec3 left_color =
+        second_half ? glm::u8vec3{std::lerp(color_q.x, color_r.x, beta),
+                                  std::lerp(color_q.y, color_r.y, beta),
+                                  std::lerp(color_q.z, color_r.z, beta)}
+                    : glm::u8vec3{std::lerp(color_p.x, color_q.x, beta),
+                                  std::lerp(color_p.y, color_q.y, beta),
+                                  std::lerp(color_p.z, color_q.z, beta)};
+    if (a.x > b.x) {
       std::swap(a, b);
+      std::swap(left_color, right_color);
+    }
     for (int j = a.x; j <= b.x; ++j) {
       auto z = std::lerp(a_z, b_z, static_cast<float>(j - a.x) / (b.x - a.x));
+      auto color =
+          glm::u8vec3(std::lerp(left_color.x, right_color.x,
+                                static_cast<float>(j - a.x) / (b.x - a.x)),
+                      std::lerp(left_color.y, right_color.y,
+                                static_cast<float>(j - a.x) / (b.x - a.x)),
+                      std::lerp(left_color.z, right_color.z,
+                                static_cast<float>(j - a.x) / (b.x - a.x)));
       if (zbuffer[(p.y + i) * img.x() + j] < z) {
         zbuffer[(p.y + i) * img.x() + j] = z;
         img.set(j, p.y + i, color);
