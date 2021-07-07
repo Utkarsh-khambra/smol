@@ -1,6 +1,5 @@
 #include "image.hpp"
 #include <algorithm>
-#include <fmt/core.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <spdlog/spdlog.h>
 #define STB_IMAGE_IMPLEMENTATION
@@ -15,11 +14,11 @@ Image::Image(int w, int h, int color) noexcept
 Image::Image(const char *filename) noexcept {
   stbi_set_flip_vertically_on_load(1);
   auto temp = stbi_load(filename, &width, &height, &channels, 0);
-  image_data.reserve(static_cast<size_t>(width * height * channels));
   if (!temp) {
     spdlog::warn("Could not open file\n");
     return;
   }
+  image_data.reserve(static_cast<size_t>(width * height * channels));
   // Expensive copy
   std::ranges::copy(temp, temp + width * height * channels,
                     std::back_insert_iterator(image_data));
@@ -54,7 +53,7 @@ void Image::write(const char *file, bool flip) const noexcept {
   stbi_write_jpg(file, width, height, channels, image_data.data(), 90);
 }
 
-glm::u8vec3 Image::get_color(int x, int y) const noexcept {
+[[nodiscard]] glm::u8vec3 Image::get_color(int x, int y) const noexcept {
   assert(image_data.size() > 0);
   size_t index = static_cast<size_t>((y * width + x) * channels);
   return glm::u8vec3(image_data.at(index), image_data.at(index + 1),

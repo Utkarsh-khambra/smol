@@ -5,11 +5,13 @@
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 
+// This function should only deal with screen space co-ordinates
 void draw_triangle(glm::ivec2 p, glm::ivec2 q, glm::ivec2 r, glm::vec3 z_val,
                    Image &img, glm::u8vec3 color_p, glm::u8vec3 color_q,
                    glm::u8vec3 color_r, float *zbuffer) {
   if (p.y == q.y && p.y == r.y)
     return;
+  // Sorting wrt to y such that p.y < q.y < r.y
   if (p.y > q.y) {
     std::swap(p, q);
     std::swap(color_p, color_q);
@@ -23,6 +25,10 @@ void draw_triangle(glm::ivec2 p, glm::ivec2 q, glm::ivec2 r, glm::vec3 z_val,
     std::swap(color_q, color_r);
   }
   int total_height = r.y - p.y;
+
+  // This interpolates between y values of bigger side and other two sides
+  // and finds the corresponding x's such that a line between both x's is
+  // horizontal
   for (auto i = 0; i < total_height; ++i) {
     bool second_half = i > (q.y - p.y) || p.y == q.y;
     int segment_height = second_half ? r.y - q.y : q.y - p.y;
@@ -53,6 +59,7 @@ void draw_triangle(glm::ivec2 p, glm::ivec2 q, glm::ivec2 r, glm::vec3 z_val,
       std::swap(a, b);
       std::swap(left_color, right_color);
     }
+    // Interpolates between found x to draw a horizontal line
     for (int j = a.x; j <= b.x; ++j) {
       auto z = std::lerp(a_z, b_z, static_cast<float>(j - a.x) / (b.x - a.x));
       auto color =
@@ -70,6 +77,7 @@ void draw_triangle(glm::ivec2 p, glm::ivec2 q, glm::ivec2 r, glm::vec3 z_val,
   }
 }
 
+// Line sweeping
 void line(glm::vec2 p, glm::vec2 q, Image &img, glm::u8vec3 color) {
   bool steep = false;
   if (std::abs(p.x - q.x) < std::abs(p.y - q.y)) {
