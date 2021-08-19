@@ -9,7 +9,8 @@ glm::vec3 light_dir(0, 0, -1);
 static constexpr int c = -3;
 
 // function to genrate view matrix
-glm::mat4 look_at(glm::vec3 camera, glm::vec3 target, glm::vec3 camera_up) {
+static glm::mat4 look_at(glm::vec3 camera, glm::vec3 target,
+                         glm::vec3 camera_up) {
   glm::mat4 view(1.0);
   auto z = glm::normalize(camera - target);
   auto x = glm::normalize(glm::cross(camera_up, z));
@@ -23,8 +24,8 @@ glm::mat4 look_at(glm::vec3 camera, glm::vec3 target, glm::vec3 camera_up) {
 
 // Function to generate projection matrix
 // TODO fix bug in this function
-glm::mat4 projection(const float view_angle, float aspect, const float near,
-                     const float far) {
+static glm::mat4 projection(const float view_angle, float aspect,
+                            const float near, const float far) {
   auto top = near / std::tan(view_angle * std::numbers::pi / 360);
   auto bottom = -top;
   auto right = top * aspect;
